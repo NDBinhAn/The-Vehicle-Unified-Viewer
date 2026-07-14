@@ -6,12 +6,43 @@ import { MockExternalModule } from './mock-external/mock-external.module';
 import configuration from './config/configuration';
 import { CorrelationIdInterceptor } from './common/interceptors/correlation-id.interceptor';
 import { MonitoringModule } from './monitoring/monitoring.module';
+import { LoggerModule } from 'nestjs-pino';
+import { trace, context } from '@opentelemetry/api';
+
+const enablePinoLogger = process.env.ENABLE_PINO_LOGGER !== 'false';
+const enablePrettyLogger = process.env.ENABLE_PRETTY_LOGGER === 'true';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration],
+    }),
+    LoggerModule.forRoot({
+      pinoHttp: enablePinoLogger
+        ? {
+            customProps: (req, res) => {
+              const activeSpan = trace.getSpan(context.active());
+              if (!activeSpan) return {};
+
+              const spanContext = activeSpan.spanContext();
+              return {
+                trace_id: spanContext.traceId,
+                span_id: spanContext.spanId,
+              };
+            },
+            transport: enablePrettyLogger
+              ? {
+                  target: 'pino-pretty',
+                  options: {
+                    colorize: true,
+                    singleLine: true,
+                    messageFormat: '[{X-Correlation-ID}] [{trace_id}] - {msg}',
+                  },
+                }
+              : undefined,
+          }
+        : undefined,
     }),
     VehicleDocumentModule,
     MockExternalModule,

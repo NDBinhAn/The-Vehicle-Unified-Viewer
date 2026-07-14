@@ -1,13 +1,23 @@
+import 'dotenv/config';
+import { initializeTracer } from './monitoring/tracer';
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import { initializeTracer } from './monitoring/tracer';
+import { logger } from './monitoring/logger';
+import { PinoNestLogger } from './monitoring/pino-nest-logger';
+
+console.log(`OpenTelemetry tracing is: ${process.env.ENABLE_OTEL_TRACING}.`);
+
 
 initializeTracer();
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    bufferLogs: true,
+  });
+
+  app.useLogger(logger ? new PinoNestLogger(logger) : undefined);
   app.setGlobalPrefix('api');
   app.useGlobalPipes(
     new ValidationPipe({
