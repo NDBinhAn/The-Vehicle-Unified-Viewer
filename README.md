@@ -64,6 +64,16 @@ The application will start on `http://localhost:3000`.
 
 * **Interactive API Documentation (Swagger UI):** Available at `http://localhost:3000/api/docs`
 
+### API Quick Test with curl
+
+```bash
+# Get unified documents for a valid VIN
+curl -X GET "http://localhost:3000/api/v1/vehicles/1HGCM82633A004352/documents?page=1&size=5"
+
+# Example with invalid VIN to verify validation
+curl -i -X GET "http://localhost:3000/api/v1/vehicles/invalid/documents"
+```
+
 ## 🧪 Testing
 
 The repository contains a robust suite of unit and integration tests that comprehensively validate the core business logic, including happy paths, cache hits, and graceful degradation scenarios.

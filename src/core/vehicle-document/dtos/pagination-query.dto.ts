@@ -1,0 +1,22 @@
+import { Type } from 'class-transformer';
+import { IsInt, IsOptional, IsString, Length, Max, Min } from 'class-validator';
+
+export class PaginationQueryDto {
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  page?: number = 1;
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  @Max(100)
+  size?: number = 10;
+
+  @IsOptional()
+  @IsString()
+  @Length(17, 17)
+  vin?: string;
+}
