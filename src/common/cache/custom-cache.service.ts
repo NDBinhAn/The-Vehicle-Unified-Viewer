@@ -26,12 +26,15 @@ export class CustomCacheService {
     key: string,
     factory: () => Promise<T>,
     ttl: number,
+    options?: { onHit?: () => void; onMiss?: () => void },
   ): Promise<T> {
     const cached = await this.get<T>(key);
     if (cached !== undefined) {
+      options?.onHit?.();
       return cached;
     }
 
+    options?.onMiss?.();
     const value = await factory();
     await this.set(key, value, ttl);
     return value;

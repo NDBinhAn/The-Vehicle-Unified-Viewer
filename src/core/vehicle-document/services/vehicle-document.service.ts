@@ -11,6 +11,7 @@ import {
 } from '../dtos/document-response.dto';
 import { SalesApiClient } from '../clients/sales-api.client';
 import { ServiceApiClient } from '../clients/service-api.client';
+import { MetricsService } from '../../../monitoring/metrics.service';
 
 @Injectable()
 export class VehicleDocumentService {
@@ -21,6 +22,7 @@ export class VehicleDocumentService {
     private readonly salesApiClient: SalesApiClient,
     private readonly serviceApiClient: ServiceApiClient,
     private readonly configService: ConfigService,
+    private readonly metricsService: MetricsService,
   ) {}
 
   async getDocuments(
@@ -72,6 +74,10 @@ export class VehicleDocumentService {
         cacheKey,
         fetcher,
         ttl,
+        {
+          onHit: () => this.metricsService.recordCacheHit(),
+          onMiss: () => this.metricsService.recordCacheMiss(),
+        },
       );
       return freshDocuments;
     } catch {
