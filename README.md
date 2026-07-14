@@ -23,7 +23,11 @@ Ensure you have the following installed on your local machine:
 
 ### 1. Clone & Install Dependencies
 ```bash
-$git clone <your-repository-url>$cd vehicle-document-viewer$ npm install
+$ git clone https://github.com/NDBinhAn/The-Vehicle-Unified-Viewer
+
+$ cd The-Vehicle-Unified-Viewer
+
+$ npm install
 
 ```
 
