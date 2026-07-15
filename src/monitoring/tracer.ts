@@ -6,8 +6,6 @@ import { ConsoleSpanExporter, SimpleSpanProcessor } from '@opentelemetry/sdk-tra
 
 const enableTracing = process.env.ENABLE_OTEL_TRACING !== 'false';
 
-console.log(`OpenTelemetry tracing is ${enableTracing ? 'enabled' : 'disabled'} Value: ${process.env.ENABLE_OTEL_TRACING}.`);
-
 export let sdk: NodeSDK | undefined;
 
 if (enableTracing) {
@@ -18,7 +16,12 @@ if (enableTracing) {
         spanProcessor: new SimpleSpanProcessor(new ConsoleSpanExporter()),
         instrumentations: [
             getNodeAutoInstrumentations({
-            '@opentelemetry/instrumentation-fs': { enabled: false }, 
+                '@opentelemetry/instrumentation-fs': { enabled: false },
+                '@opentelemetry/instrumentation-net': { enabled: false },
+                '@opentelemetry/instrumentation-dns': { enabled: false },
+                '@opentelemetry/instrumentation-express': { enabled: false },
+                
+                '@opentelemetry/instrumentation-http': { enabled: true },
             }),
         ],
     });

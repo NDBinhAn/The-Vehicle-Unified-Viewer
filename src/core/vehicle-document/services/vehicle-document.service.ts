@@ -60,16 +60,6 @@ export class VehicleDocumentService {
     const cacheKey = `cache:${source}:${vin}`;
 
     try {
-      const cachedDocuments =
-        await this.cacheService.get<VehicleDocumentDto[]>(cacheKey);
-      if (cachedDocuments) {
-        return cachedDocuments;
-      }
-    } catch {
-      this.logger.warn(`Cache lookup failed for ${source} ${vin}`);
-    }
-
-    try {
       const freshDocuments = await this.cacheService.getOrSet(
         cacheKey,
         fetcher,

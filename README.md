@@ -40,14 +40,15 @@ $ cp .env.example .env
 
 ```
 
-### 3. Spin Up Infrastructure (Redis)
+### 3. Spin Up Infrastructure (Redis + Observability)
 
-Use Docker Compose to launch a lightweight Redis instance in the background:
+Use Docker Compose to launch Redis, Prometheus, and Grafana in the background:
 
 ```
 $ docker compose up -d
-
 ```
+
+> Grafana will be available at `http://localhost:3001`
 
 ### 4. Running the Application
 
@@ -56,13 +57,18 @@ $ docker compose up -d
 $ npm run start:dev
 
 # Production mode
-$npm run build$ npm run start:prod
+$ npm run build
+$ npm run start:prod
 
 ```
 
 The application will start on `http://localhost:3000`.
 
 * **Interactive API Documentation (Swagger UI):** Available at `http://localhost:3000/api/docs`
+* **Health endpoint:** `http://localhost:3000/api/health`
+* **Metrics endpoint:** `http://localhost:3000/api/metrics`
+
+See `OBSERVABILITY.md` for Grafana dashboard usage and monitoring details.
 
 ### API Quick Test with curl
 

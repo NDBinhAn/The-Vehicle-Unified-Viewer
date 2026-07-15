@@ -12,8 +12,8 @@ export class HealthController {
   @HealthCheck()
   check() {
     return this.health.check([
-      () => this.http.pingCheck('sales-mock', 'http://127.0.0.1:3000/api/mock-api/sales/ping'),
-      () => this.http.pingCheck('service-mock', 'http://127.0.0.1:3000/api/mock-api/service/ping'),
+      () => this.http.pingCheck('sales-mock', `http://127.0.0.1:${process.env.PORT ?? 3000}/api/mock-api/sales/ping`),
+      () => this.http.pingCheck('service-mock', `http://127.0.0.1:${process.env.PORT ?? 3000}/api/mock-api/service/ping`),
     ]);
   }
 }

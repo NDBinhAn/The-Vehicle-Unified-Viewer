@@ -29,7 +29,7 @@ export class ServiceApiClient {
           const response = await this.httpClient.get<{
             documents?: VehicleDocumentDto[];
           }>(
-            `${this.configService.get<string>('serviceMockBaseUrl', 'http://127.0.0.1:3000/api/mock-api/service')}/${vin}`,
+            `${this.configService.get<string>('serviceMockBaseUrl', `http://127.0.0.1:${process.env.PORT ?? 3000}/api/mock-api/service`)}/${vin}`,
           );
           this.metricsService.recordServiceRequest('success');
           this.metricsService.recordDownstreamLatency('service', Date.now() - startedAt);

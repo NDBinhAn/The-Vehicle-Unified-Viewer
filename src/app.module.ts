@@ -6,6 +6,7 @@ import { MockExternalModule } from './mock-external/mock-external.module';
 import configuration from './config/configuration';
 import { CorrelationIdInterceptor } from './common/interceptors/correlation-id.interceptor';
 import { MonitoringModule } from './monitoring/monitoring.module';
+import { MetricsInterceptor } from './common/interceptors/metrics.interceptor';
 import { LoggerModule } from 'nestjs-pino';
 import { trace, context } from '@opentelemetry/api';
 
@@ -49,6 +50,10 @@ const enablePrettyLogger = process.env.ENABLE_PRETTY_LOGGER === 'true';
     MonitoringModule,
   ],
   providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: MetricsInterceptor,
+    },
     {
       provide: APP_INTERCEPTOR,
       useClass: CorrelationIdInterceptor,

@@ -7,9 +7,6 @@ import { AppModule } from './app.module';
 import { logger } from './monitoring/logger';
 import { PinoNestLogger } from './monitoring/pino-nest-logger';
 
-console.log(`OpenTelemetry tracing is: ${process.env.ENABLE_OTEL_TRACING}.`);
-
-
 initializeTracer();
 
 async function bootstrap() {

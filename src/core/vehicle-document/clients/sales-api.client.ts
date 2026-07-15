@@ -29,7 +29,7 @@ export class SalesApiClient {
           const response = await this.httpClient.get<{
             documents?: VehicleDocumentDto[];
           }>(
-            `${this.configService.get<string>('salesMockBaseUrl', 'http://127.0.0.1:3000/api/mock-api/sales')}/${vin}`,
+            `${this.configService.get<string>('salesMockBaseUrl', `http://127.0.0.1:${process.env.PORT ?? 3000}/api/mock-api/sales`)}/${vin}`,
           );
           this.metricsService.recordSalesRequest('success');
           this.metricsService.recordDownstreamLatency('sales', Date.now() - startedAt);

@@ -23,10 +23,10 @@ export const configuration = (): AppConfig => ({
   salesCacheTtl: Number.parseInt(process.env.SALES_CACHE_TTL ?? '86400', 10),
   serviceCacheTtl: Number.parseInt(process.env.SERVICE_CACHE_TTL ?? '1800', 10),
   salesMockBaseUrl:
-    process.env.SALES_MOCK_BASE_URL ?? 'http://127.0.0.1:3000/api/mock-api/sales',
+    process.env.SALES_MOCK_BASE_URL ?? `http://127.0.0.1:${process.env.PORT ?? 3000}/api/mock-api/sales`,
   serviceMockBaseUrl:
     process.env.SERVICE_MOCK_BASE_URL ??
-    'http://127.0.0.1:3000/api/mock-api/service',
+    `http://127.0.0.1:${process.env.PORT ?? 3000}/api/mock-api/service`,
 });
 
 export default configuration;

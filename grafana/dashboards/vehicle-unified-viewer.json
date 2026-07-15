@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 36,
+  "version": 1,
+  "title": "Vehicle Unified Viewer Metrics",
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "API Request Duration",
+      "gridPos": {"x": 0, "y": 0, "w": 12, "h": 7},
+      "targets": [
+        {
+          "expr": "http_request_duration_seconds_sum / http_request_duration_seconds_count",
+          "legendFormat": "{{route}}"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Downstream Latency",
+      "gridPos": {"x": 12, "y": 0, "w": 12, "h": 7},
+      "targets": [
+        {
+          "expr": "external_dependency_duration_seconds_sum / external_dependency_duration_seconds_count",
+          "legendFormat": "{{source}}"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Redis Cache Hits vs Misses",
+      "gridPos": {"x": 0, "y": 7, "w": 12, "h": 7},
+      "targets": [
+        {"expr": "redis_cache_hits_total", "legendFormat": "hits"},
+        {"expr": "redis_cache_misses_total", "legendFormat": "misses"}
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Redis Cache Hit Ratio",
+      "gridPos": {"x": 12, "y": 7, "w": 12, "h": 7},
+      "targets": [
+        {"expr": "redis_cache_hit_ratio"}
+      ]
+    }
+  ],
+  "timezone": "browser",
+  "refresh": "10s"
+}

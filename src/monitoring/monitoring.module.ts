@@ -13,6 +13,9 @@ import { HttpModule } from '@nestjs/axios';
     }),
     PrometheusModule.register({
       path: '/metrics', // Automatically generate /metrics endpoint for the entire app
+      defaultMetrics: {
+        enabled: true, // Enable default metrics collection (CPU, memory, etc.)
+      },
     }),
   ],
   controllers: [HealthController],

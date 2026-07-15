@@ -28,21 +28,20 @@ export class CustomCacheService {
     ttl: number,
     options?: { onHit?: () => void; onMiss?: () => void },
   ): Promise<T> {
-    const cached = await this.get<T>(key);
+    const cached = await this.get<T>(key, options);
     if (cached !== undefined) {
-      options?.onHit?.();
       return cached;
     }
 
-    options?.onMiss?.();
     const value = await factory();
     await this.set(key, value, ttl);
     return value;
   }
 
-  async get<T>(key: string): Promise<T | undefined> {
+  async get<T>(key: string, options?: { onHit?: () => void; onMiss?: () => void }): Promise<T | undefined> {
     const entry = await this.getEntry(key);
     if (!entry) {
+      options?.onMiss?.();
       return undefined;
     }
 
@@ -51,6 +50,7 @@ export class CustomCacheService {
       return undefined;
     }
 
+    options?.onHit?.();
     return JSON.parse(entry.value) as T;
   }
 
